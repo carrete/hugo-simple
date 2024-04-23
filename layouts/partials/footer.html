@@ -4,7 +4,6 @@
 {{ if not .Site.Params.hideMadeWithLine }}
   <span>
     {{ if .Site.Copyright }}|{{ end }}
-    Made with
-    <a href="https://github.com/maolonglong/hugo-simple/">Hugo ʕ•ᴥ•ʔ Simple</a>
+    {{ markdownify .Site.Params.madeWith }}
   </span>
 {{ end }}
