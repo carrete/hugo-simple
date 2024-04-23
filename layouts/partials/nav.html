@@ -7,7 +7,7 @@
   >
 {{ end }}
 {{ if not .Site.Params.hideRSSLink }}
-  <a href="{{ relURL "index.xml" }}">
+  <a href="{{ relURL (printf "%s/index.xml" .Page.Lang) }}">
     <svg xmlns="http://www.w3.org/2000/svg" class="icon" viewBox="0 0 448 512">
       <!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
       <path
@@ -16,4 +16,22 @@
     </svg>
     RSS
   </a>
+{{ end }}
+
+<!-- Convert this page's translations into a dict -->
+{{ $translations := dict }}
+{{ range .Translations }}
+  {{ $translations = merge $translations (dict .Language.Lang .) }}
+{{ end }}
+
+<!-- Create a link to every translation -->
+{{ range where .Site.Languages "Lang" "!=" .Page.Lang }}
+  {{ with (index $translations .Lang) }}
+    <a href="{{ .RelPermalink }}">{{ .Language.LanguageName }}</a>
+  {{ else }}
+    <!-- The complicated setup was necessary to make a grayed out link -->
+    {{ if not .Params.hideUntranslated }}
+      <a class="disabled" role="link" aria-disabled="true">{{ .LanguageName }}</a>
+    {{ end }}
+  {{ end }}
 {{ end }}
