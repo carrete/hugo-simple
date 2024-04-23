@@ -46,6 +46,10 @@
       {{ block "main" . }}{{ end }}
     </main>
     <footer>
+      {{ $customFooter := (printf "partials/custom_footer.%s.html" .Site.LanguageCode) }}
+      {{ if templates.Exists $customFooter }}
+      {{ partial $customFooter . }}
+      {{ end }}
       {{ partial "footer.html" . }}
     </footer>
 
